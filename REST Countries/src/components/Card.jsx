@@ -14,6 +14,7 @@ const Container = styled.div`
   & > img {
     display: block;
     width: 320px;
+    height: 200px;
   }
 `;
 
@@ -40,22 +41,24 @@ const Info = styled.section`
   }
 `;
 
-const Card = () => {
+const Card = (props) => {
+  const { flags, name, population, region, capital } = props;
+  console.log(flags);
   return (
     <Container>
-      <img src="https://flagcdn.com/w320/de.png" />
+      <img src={flags.png} />
       <Info>
-        <h1>Germany</h1>
+        <h1>{name}</h1>
         <p>
-          <Bold>Population:</Bold> 81,770,345
+          <Bold>Population:</Bold> {population}
         </p>
         <p>
           <Bold>Region:</Bold>
-          Europe
+          {region}
         </p>
         <p>
           <Bold>Capital:</Bold>
-          Berlin
+          {capital}
         </p>
       </Info>
     </Container>

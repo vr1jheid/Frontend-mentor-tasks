@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Filter from "../components/Filter";
 import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
 
 import { lightTheme } from "../GlobalStyles";
+import countries, {
+  fetchCountries,
+  selectCountries,
+} from "../redux/slices/countries";
 
 const Main = styled.main`
   padding: 50px 70px;
@@ -23,16 +28,20 @@ const Countries = styled.div`
 `;
 
 const Homepage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(fetchCountries("http://localhost:3000/countries"));
+    }, 2000);
+  }, []);
+  const countriesList = useSelector(selectCountries);
   return (
     <Main>
       <Filter />
       <Countries>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {countriesList.length &&
+          countriesList.map((country) => <Card {...country} />)}
       </Countries>
     </Main>
   );
