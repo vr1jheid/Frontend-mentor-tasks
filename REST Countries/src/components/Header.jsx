@@ -6,7 +6,6 @@ import { lightTheme, darkTheme, typography } from "../GlobalStyles";
 const StyledHeader = styled.header`
   padding: 30px 70px;
   display: flex;
-  margin-bottom: 50px;
   justify-content: space-between;
   background-color: ${lightTheme.colors.white};
   color: inherit;
