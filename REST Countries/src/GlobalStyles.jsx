@@ -29,8 +29,8 @@ export const lightTheme = {
 
 export const typography = {
   fontSize: {
-    homepage: "14px",
-    detail: "16px",
+    homepage: "16px",
+    detail: "18px",
   },
   weight: {
     regular: 400,

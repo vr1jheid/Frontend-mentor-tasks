@@ -43,7 +43,6 @@ const Info = styled.section`
 
 const Card = (props) => {
   const { flags, name, population, region, capital } = props;
-  console.log(flags);
   return (
     <Container>
       <img src={flags.png} />

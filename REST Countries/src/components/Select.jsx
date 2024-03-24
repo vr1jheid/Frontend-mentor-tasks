@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { lightTheme, other, typography } from "../GlobalStyles";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
+import { useSelector } from "react-redux";
+import { selectRegionFilter } from "../redux/slices/filter";
 
 const Container = styled.div`
   width: 180px;
@@ -53,10 +55,10 @@ const Options = styled.ul`
   }
 `;
 
-const Select = ({ options, title }) => {
+const Select = ({ options, title, dispatchOption }) => {
   const ref = useRef();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(title);
+  const selectedOption = useSelector(selectRegionFilter);
 
   const closeSelect = useCallback((e) => {
     console.log(isOpen);
@@ -77,7 +79,7 @@ const Select = ({ options, title }) => {
   return (
     <Container>
       <Button ref={ref} onClick={clickHandler}>
-        {selectedOption}
+        {selectedOption || title}
         {isOpen ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
       </Button>
 
@@ -87,8 +89,8 @@ const Select = ({ options, title }) => {
             <li
               key={option}
               tabIndex={0}
-              onClick={(e) => {
-                setSelectedOption(option);
+              onClick={() => {
+                dispatchOption(option);
               }}
             >
               {option}

@@ -9,6 +9,7 @@ import countries, {
   fetchCountries,
   selectCountries,
 } from "../redux/slices/countries";
+import { selectNameFilter, selectRegionFilter } from "../redux/slices/filter";
 
 const Main = styled.main`
   padding: 50px 70px;
@@ -29,19 +30,31 @@ const Countries = styled.div`
 
 const Homepage = () => {
   const dispatch = useDispatch();
+  const nameFilter = useSelector(selectNameFilter);
+  const regionFilter = useSelector(selectRegionFilter);
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchCountries("http://localhost:3000/countries"));
-    }, 2000);
+    }, 0);
   }, []);
-  const countriesList = useSelector(selectCountries);
+  const countries = useSelector(selectCountries);
+
+  const filteredCountries = countries.filter(
+    ({ name, region }) =>
+      name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+      region.toLowerCase().includes(regionFilter.toLowerCase())
+  );
+  console.log(filteredCountries);
+
   return (
     <Main>
       <Filter />
       <Countries>
-        {countriesList.length &&
-          countriesList.map((country) => <Card {...country} />)}
+        {filteredCountries.length &&
+          filteredCountries.map((country) => (
+            <Card {...country} key={country.name} />
+          ))}
       </Countries>
     </Main>
   );
