@@ -6,6 +6,7 @@ import { lightTheme, other, typography, darkTheme } from "../GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries, selectCountries } from "../redux/slices/countries";
 import addCommasToNum from "../utils/addComasToNum";
+
 const Container = styled.main`
   max-height: calc(100vh - 100px);
   padding: 70px;
@@ -94,15 +95,18 @@ const CountryPage = () => {
   useEffect(() => {
     if (countries.length) return;
     setTimeout(() => {
-      dispatch(fetchCountries("http://localhost:3000/countries"));
+      dispatch(fetchCountries("https://restcountries.com/v3.1/all"));
     }, 0);
   }, []);
-  const country = countries.find((country) => country.name === countryName);
+
+  const country = countries.find(
+    (country) => country.name.common.toLowerCase() === countryName.toLowerCase()
+  );
 
   const borderCountries = country?.borders?.map(
-    (alpha3Code) => countries.find((c) => c.alpha3Code === alpha3Code).name
+    (alpha3Code) => countries.find((c) => c.cca3 === alpha3Code).name.common
   );
-  console.log(country);
+  console.log("borderCountries", borderCountries);
   return (
     <Container>
       <Button onClick={() => navigate(-1)}>
@@ -113,9 +117,9 @@ const CountryPage = () => {
         "Loader"
       ) : (
         <CountryInfo>
-          <img src={country.flag} alt="Flag" />
+          <img src={country.flags.svg} alt={country.flags.alt} />
           <MainInfo>
-            <h1>{country.name}</h1>
+            <h1>{country.name.official}</h1>
             <p>
               <span>Native name:</span>
               {country.nativeName}
@@ -138,15 +142,19 @@ const CountryPage = () => {
             </p>
             <p>
               <span>Top Level Domain:</span>
-              {country.topLevelDomain}
+              {country.tld.join(" ")}
             </p>
             <p>
               <span>Currencies:</span>
-              {country.currencies ? country.currencies[0].name : "No Data"}
+              {country.currencies
+                ? Object.values(country.currencies)
+                    .map((c) => c.name)
+                    .join(", ")
+                : "No Data"}
             </p>
             <p>
               <span>Languages:</span>
-              {country.languages.map((l) => l.name).join(", ")}
+              {Object.values(country.languages).join(", ")}
             </p>
             <BorderCountries>
               <p>Border Countries: </p>
@@ -155,7 +163,7 @@ const CountryPage = () => {
               ) : (
                 <div>
                   {borderCountries.map((c) => (
-                    <Link key={c} to={`/${c}`}>
+                    <Link key={c} to={`/${c.toLowerCase()}`}>
                       <Button>{c}</Button>
                     </Link>
                   ))}

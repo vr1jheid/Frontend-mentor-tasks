@@ -49,7 +49,7 @@ const Card = (props) => {
     <Container>
       <img src={flags.png} />
       <Info>
-        <h1>{name}</h1>
+        <h1>{name.official}</h1>
         <p>
           <Bold>Population:</Bold> {addComasToNum(population)}
         </p>
