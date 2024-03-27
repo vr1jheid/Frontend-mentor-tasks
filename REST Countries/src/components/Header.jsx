@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { FaRegMoon } from "react-icons/fa6";
 import { lightTheme, darkTheme, typography } from "../GlobalStyles";
 
@@ -9,6 +10,8 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   background-color: ${lightTheme.colors.white};
   color: inherit;
+  margin-bottom: 5px;
+  box-shadow: ${lightTheme.shadow};
 `;
 
 const Title = styled.h1`
@@ -27,7 +30,10 @@ const ThemeSwitcher = styled.div`
 const Header = () => {
   return (
     <StyledHeader>
-      <Title>Where in the world?</Title>
+      <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
+        <Title>Where in the world?</Title>
+      </Link>
+
       <ThemeSwitcher>
         <FaRegMoon /> Dark mode
       </ThemeSwitcher>

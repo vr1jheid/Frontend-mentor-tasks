@@ -20,9 +20,7 @@ const Search = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: ${other.borderRadius};
-  -webkit-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  -moz-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
+  box-shadow: ${lightTheme.shadow};
 
   & > input[type="text"] {
     font-size: 1.2em;

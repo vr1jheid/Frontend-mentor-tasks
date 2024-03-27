@@ -25,6 +25,7 @@ export const lightTheme = {
     lightGrey: "hsl(0, 0%, 98%)",
     white: "hsl(0, 0%, 100%)",
   },
+  shadow: "0px 0px 10px 3px rgba(0, 0, 0, 0.07)",
 };
 
 export const typography = {

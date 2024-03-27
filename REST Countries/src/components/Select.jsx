@@ -11,10 +11,12 @@ const Container = styled.div`
   position: relative;
   border: none;
   border-radius: ${other.borderRadius};
-  -webkit-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  -moz-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
+  box-shadow: ${lightTheme.shadow};
   color: inherit;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Button = styled.button`
@@ -30,6 +32,9 @@ const Button = styled.button`
   justify-content: space-between;
   gap: 25px;
   padding: 10px 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Options = styled.ul`

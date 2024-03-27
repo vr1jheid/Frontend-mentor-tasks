@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { lightTheme, other, typography } from "../GlobalStyles";
+import addComasToNum from "../utils/addComasToNum";
 
 const Container = styled.div`
   background-color: ${lightTheme.colors.white};
+  color: ${lightTheme.colors.veryDarkBlue};
   width: fit-content;
   border-radius: ${other.borderRadius};
   -webkit-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
@@ -49,7 +51,7 @@ const Card = (props) => {
       <Info>
         <h1>{name}</h1>
         <p>
-          <Bold>Population:</Bold> {population}
+          <Bold>Population:</Bold> {addComasToNum(population)}
         </p>
         <p>
           <Bold>Region:</Bold>

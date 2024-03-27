@@ -10,14 +10,12 @@ import countries, {
   selectCountries,
 } from "../redux/slices/countries";
 import { selectNameFilter, selectRegionFilter } from "../redux/slices/filter";
+import { Link } from "react-router-dom";
 
 const Main = styled.main`
   padding: 50px 70px;
   min-height: 700px;
   background-color: ${lightTheme.colors.lightGrey};
-  -webkit-box-shadow: 0px 2px 19px -5px rgba(34, 60, 80, 0.2) inset;
-  -moz-box-shadow: 0px 2px 19px -5px rgba(34, 60, 80, 0.2) inset;
-  box-shadow: 0px 2px 19px -5px rgba(34, 60, 80, 0.2) inset;
 `;
 
 const Countries = styled.div`
@@ -32,13 +30,13 @@ const Homepage = () => {
   const dispatch = useDispatch();
   const nameFilter = useSelector(selectNameFilter);
   const regionFilter = useSelector(selectRegionFilter);
-
+  const countries = useSelector(selectCountries);
   useEffect(() => {
+    if (countries.length) return;
     setTimeout(() => {
       dispatch(fetchCountries("http://localhost:3000/countries"));
     }, 0);
   }, []);
-  const countries = useSelector(selectCountries);
 
   const filteredCountries = countries.filter(
     ({ name, region }) =>
@@ -53,7 +51,13 @@ const Homepage = () => {
       <Countries>
         {filteredCountries.length &&
           filteredCountries.map((country) => (
-            <Card {...country} key={country.name} />
+            <Link
+              style={{ textDecoration: "none" }}
+              key={country.name}
+              to={country.name}
+            >
+              <Card {...country} />
+            </Link>
           ))}
       </Countries>
     </Main>
