@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
-import { lightTheme, other, typography } from "../GlobalStyles";
-import { TiArrowSortedDown } from "react-icons/ti";
-import { TiArrowSortedUp } from "react-icons/ti";
+import { darkTheme, lightTheme, other, typography } from "../../GlobalStyles";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { useSelector } from "react-redux";
-import { selectRegionFilter } from "../redux/slices/filter";
+import { selectRegionFilter } from "../../redux/slices/filter";
+import { selectTheme } from "../../redux/slices/theme";
 
 const Container = styled.div`
   width: 180px;
@@ -12,6 +12,10 @@ const Container = styled.div`
   border: none;
   border-radius: ${other.borderRadius};
   box-shadow: ${lightTheme.shadow};
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.white
+      : darkTheme.colors.darkBlue};
   color: inherit;
 
   &:hover {
@@ -24,7 +28,7 @@ const Button = styled.button`
   width: 100%;
   height: 100%;
   border: none;
-  background-color: ${lightTheme.colors.white};
+  background-color: inherit;
   border-radius: ${other.borderRadius};
   color: inherit;
   display: flex;
@@ -45,22 +49,24 @@ const Options = styled.ul`
   top: 60px;
   left: 0px;
   width: 100%;
-  background-color: ${lightTheme.colors.white};
+  background-color: inherit;
   border-radius: ${other.borderRadius};
-  -webkit-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  -moz-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
+  box-shadow: ${lightTheme.shadow};
+`;
 
-  & li {
-    font-size: 1.1em;
-    padding: 5px 20px;
-    &:hover {
-      background-color: ${lightTheme.colors.lightGrey};
-    }
+const Option = styled.li`
+  font-size: 1.1em;
+  padding: 5px 20px;
+  &:hover {
+    background-color: ${(props) =>
+      props.$theme === "light"
+        ? lightTheme.colors.lightGrey
+        : darkTheme.colors.veryDarkBlue};
   }
 `;
 
 const Select = ({ options, title, dispatchOption }) => {
+  const theme = useSelector(selectTheme);
   const ref = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const selectedOption = useSelector(selectRegionFilter);
@@ -82,7 +88,7 @@ const Select = ({ options, title, dispatchOption }) => {
   };
 
   return (
-    <Container>
+    <Container $theme={theme}>
       <Button ref={ref} onClick={clickHandler}>
         {selectedOption || title}
         {isOpen ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
@@ -91,7 +97,8 @@ const Select = ({ options, title, dispatchOption }) => {
       {isOpen && (
         <Options tabIndex={0}>
           {options.map((option) => (
-            <li
+            <Option
+              $theme={theme}
               key={option}
               tabIndex={0}
               onClick={() => {
@@ -99,7 +106,7 @@ const Select = ({ options, title, dispatchOption }) => {
               }}
             >
               {option}
-            </li>
+            </Option>
           ))}
         </Options>
       )}

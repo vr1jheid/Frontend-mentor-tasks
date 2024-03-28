@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Filter from "../components/Filter";
+import Filter from "../components/Filter/Filter";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
 
-import { lightTheme } from "../GlobalStyles";
-import countries, {
+import { darkTheme, lightTheme } from "../GlobalStyles";
+import {
   fetchCountries,
   selectCountries,
   selectIsLoading,
@@ -14,11 +14,15 @@ import { selectNameFilter, selectRegionFilter } from "../redux/slices/filter";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import { selectTheme } from "../redux/slices/theme";
 
 const Main = styled.main`
   padding: 50px 70px;
-  min-height: 700px;
-  background-color: ${lightTheme.colors.lightGrey};
+  min-height: calc(100vh - 100px);
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.lightGrey
+      : darkTheme.colors.veryDarkBlue};
 `;
 
 const Countries = styled.div`
@@ -29,7 +33,15 @@ const Countries = styled.div`
   row-gap: 50px;
 `;
 
+const NoMatches = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  font-size: 2em;
+`;
+
 const Homepage = () => {
+  const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
   const nameFilter = useSelector(selectNameFilter);
   const regionFilter = useSelector(selectRegionFilter);
@@ -38,10 +50,9 @@ const Homepage = () => {
 
   useEffect(() => {
     if (countries.length) return;
-    /* dispatch(fetchCountries("http://localhost:3000/countries")); */
     dispatch(fetchCountries("https://restcountries.com/v3.1/all"));
   }, []);
-  console.log(countries);
+
   const filteredCountries = countries?.filter(
     ({ name, region }) =>
       name.official.toLowerCase().includes(nameFilter.toLowerCase()) &&
@@ -53,6 +64,9 @@ const Homepage = () => {
     }
     if (!isLoading && !countries.length) {
       return <Error message={"Lost connection with API server"} />;
+    }
+    if (!isLoading && !filteredCountries.length) {
+      return <NoMatches>No matches with the filter </NoMatches>;
     }
     return (
       <Countries>
@@ -71,21 +85,9 @@ const Homepage = () => {
   };
 
   return (
-    <Main>
+    <Main $theme={theme}>
       <Filter />
       {renderCountriesCards()}
-      {/*       <Countries>
-        {filteredCountries.length &&
-          filteredCountries.map((country) => (
-            <Link
-              style={{ textDecoration: "none" }}
-              key={country.name}
-              to={country.name.toLowerCase()}
-            >
-              <Card {...country} />
-            </Link>
-          ))}
-      </Countries> */}
     </Main>
   );
 };

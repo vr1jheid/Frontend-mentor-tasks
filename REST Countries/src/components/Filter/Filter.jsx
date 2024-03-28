@@ -1,38 +1,53 @@
 import React from "react";
 import styled from "styled-components";
 import Select from "./Select";
-import { IoIosSearch } from "react-icons/io";
-
-import { lightTheme, other } from "../GlobalStyles";
+import StyledButton from "./StyledButton";
+import { IoIosSearch, IoMdClose } from "react-icons/io";
+import { darkTheme, lightTheme, other } from "../../GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectNameFilter,
   setNameFilter,
   setRegionFilter,
-} from "../redux/slices/filter";
+} from "../../redux/slices/filter";
+import { selectTheme } from "../../redux/slices/theme";
 
 const Search = styled.div`
   width: 400px;
-  background-color: ${lightTheme.colors.white};
 
   padding: 5px 20px;
   display: inline-flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   border-radius: ${other.borderRadius};
   box-shadow: ${lightTheme.shadow};
+  color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.veryDarkBlue
+      : lightTheme.colors.lightGrey};
+
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.white
+      : darkTheme.colors.darkBlue};
 
   & > input[type="text"] {
     font-size: 1.2em;
-    background-color: ${lightTheme.colors.white};
     border: none;
     padding: 10px 5px;
     outline: none;
+    background-color: inherit;
+    color: inherit;
+  }
+
+  & > input::placeholder {
+    color: inherit;
   }
 
   & > svg {
-    width: 17px;
-    height: 17px;
+    width: 25px;
+    height: 25px;
   }
 `;
 
@@ -44,6 +59,7 @@ const Container = styled.div`
 `;
 
 const Filter = () => {
+  const theme = useSelector(selectTheme);
   const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
   const dispatch = useDispatch();
   const searchByNameHandler = (e) => {
@@ -55,7 +71,7 @@ const Filter = () => {
 
   return (
     <Container>
-      <Search>
+      <Search $theme={theme}>
         <IoIosSearch />
         <input
           value={useSelector(selectNameFilter)}
@@ -63,6 +79,10 @@ const Filter = () => {
           type="text"
           placeholder="Search for a country..."
         />
+
+        <StyledButton onClick={() => dispatch(setNameFilter(""))}>
+          <IoMdClose />
+        </StyledButton>
       </Search>
       <Select
         options={regions}

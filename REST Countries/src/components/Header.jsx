@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { FaRegMoon } from "react-icons/fa6";
-import { lightTheme, darkTheme, typography } from "../GlobalStyles";
+import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { lightTheme, darkTheme, typography, other } from "../GlobalStyles";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTheme, selectTheme } from "../redux/slices/theme";
 
 const StyledHeader = styled.header`
   padding: 30px 70px;
   display: flex;
   justify-content: space-between;
-  background-color: ${lightTheme.colors.white};
+  background-color: inherit;
   color: inherit;
   margin-bottom: 5px;
   box-shadow: ${lightTheme.shadow};
@@ -17,25 +19,42 @@ const StyledHeader = styled.header`
 const Title = styled.h1`
   font-size: 1.7em;
   font-weight: ${typography.weight.bold};
+  border-radius: ${other.borderRadius};
+
+  &:hover {
+    transform: scale(1.06);
+  }
 `;
 
-const ThemeSwitcher = styled.div`
-  font-weight: ${typography.weight.medium};
+const ThemeSwitcher = styled.button`
+  border: none;
+  background-color: inherit;
+  padding: 10px;
+  font-weight: ${typography.weight.regular};
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
+  border-radius: ${other.borderRadius};
+  color: inherit;
+  background-color: inherit;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Header = () => {
+  const theme = useSelector(selectTheme);
+  const dispatch = useDispatch();
   return (
     <StyledHeader>
       <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
         <Title>Where in the world?</Title>
       </Link>
 
-      <ThemeSwitcher>
-        <FaRegMoon /> Dark mode
+      <ThemeSwitcher onClick={() => dispatch(changeTheme())}>
+        {theme === "light" ? <MdOutlineDarkMode /> : <MdDarkMode />} Dark mode
       </ThemeSwitcher>
     </StyledHeader>
   );

@@ -1,16 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import { lightTheme, other, typography } from "../GlobalStyles";
+import { darkTheme, lightTheme, other, typography } from "../GlobalStyles";
 import addComasToNum from "../utils/addComasToNum";
+import theme, { selectTheme } from "../redux/slices/theme";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
-  background-color: ${lightTheme.colors.white};
-  color: ${lightTheme.colors.veryDarkBlue};
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.white
+      : darkTheme.colors.darkBlue};
+
+  color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.veryDarkBlue
+      : darkTheme.colors.white};
   width: fit-content;
+  height: 430px;
   border-radius: ${other.borderRadius};
-  -webkit-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  -moz-box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
-  box-shadow: 2px 2px 17px 0px rgba(34, 60, 80, 0.15);
+  box-shadow: ${lightTheme.shadow};
   overflow: hidden;
 
   & > img {
@@ -44,9 +52,10 @@ const Info = styled.section`
 `;
 
 const Card = (props) => {
+  const theme = useSelector(selectTheme);
   const { flags, name, population, region, capital } = props;
   return (
-    <Container>
+    <Container $theme={theme}>
       <img src={flags.png} />
       <Info>
         <h1>{name.official}</h1>

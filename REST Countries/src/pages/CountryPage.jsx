@@ -6,12 +6,16 @@ import { lightTheme, other, typography, darkTheme } from "../GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries, selectCountries } from "../redux/slices/countries";
 import addCommasToNum from "../utils/addComasToNum";
+import { selectTheme } from "../redux/slices/theme";
 
 const Container = styled.main`
-  max-height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px);
   padding: 70px;
   font-size: ${typography.fontSize.detail};
-  background-color: ${lightTheme.colors.lightGrey};
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.lightGrey
+      : darkTheme.colors.veryDarkBlue};
 `;
 
 const Button = styled.button`
@@ -19,7 +23,17 @@ const Button = styled.button`
   align-items: center;
   gap: 10px;
   font-size: 1em;
-  background-color: ${lightTheme.colors.white};
+
+  background-color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.whitem
+      : darkTheme.colors.darkBlue};
+
+  color: ${(props) =>
+    props.$theme === "light"
+      ? lightTheme.colors.veryDarkBlue
+      : darkTheme.colors.white};
+
   border: none;
   padding: 10px 30px;
   outline: none;
@@ -45,7 +59,6 @@ const CountryInfo = styled.section`
 `;
 
 const MainInfo = styled.div`
-  padding: 50px 0px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 100px;
@@ -87,6 +100,7 @@ const BorderCountries = styled.div`
 `;
 
 const CountryPage = () => {
+  const theme = useSelector(selectTheme);
   const { country: countryName } = useParams();
   const dispatch = useDispatch();
   const countries = useSelector(selectCountries);
@@ -94,9 +108,7 @@ const CountryPage = () => {
 
   useEffect(() => {
     if (countries.length) return;
-    setTimeout(() => {
-      dispatch(fetchCountries("https://restcountries.com/v3.1/all"));
-    }, 0);
+    dispatch(fetchCountries("https://restcountries.com/v3.1/all"));
   }, []);
 
   const country = countries.find(
@@ -108,8 +120,8 @@ const CountryPage = () => {
   );
   console.log("borderCountries", borderCountries);
   return (
-    <Container>
-      <Button onClick={() => navigate(-1)}>
+    <Container $theme={theme}>
+      <Button $theme={theme} onClick={() => navigate(-1)}>
         <FaLongArrowAltLeft /> Back
       </Button>
 
@@ -122,7 +134,11 @@ const CountryPage = () => {
             <h1>{country.name.official}</h1>
             <p>
               <span>Native name:</span>
-              {country.nativeName}
+              {countryName.nativeName
+                ? Object.values(Object.values(country.name.nativeName)[0]).join(
+                    ", "
+                  )
+                : "No Data"}
             </p>
             <p>
               <span>Population:</span>
@@ -134,7 +150,7 @@ const CountryPage = () => {
             </p>
             <p>
               <span>Sub Region:</span>
-              {country.subregion}
+              {country.subregion ?? "No data"}
             </p>
             <p>
               <span>Capital</span>
@@ -154,7 +170,9 @@ const CountryPage = () => {
             </p>
             <p>
               <span>Languages:</span>
-              {Object.values(country.languages).join(", ")}
+              {country.languages
+                ? Object.values(country.languages).join(", ")
+                : "No Data"}
             </p>
             <BorderCountries>
               <p>Border Countries: </p>
@@ -164,7 +182,7 @@ const CountryPage = () => {
                 <div>
                   {borderCountries.map((c) => (
                     <Link key={c} to={`/${c.toLowerCase()}`}>
-                      <Button>{c}</Button>
+                      <Button $theme={theme}>{c}</Button>
                     </Link>
                   ))}
                 </div>
