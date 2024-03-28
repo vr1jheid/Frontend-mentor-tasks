@@ -3,6 +3,7 @@ import GlobalStyles from "./GlobalStyles";
 import Layout from "./components/Layout";
 import Homepage from "./pages/Homepage";
 import CountryPage from "./pages/CountryPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />} />
           <Route path="/:country" element={<CountryPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>

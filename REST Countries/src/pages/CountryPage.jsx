@@ -4,9 +4,15 @@ import styled from "styled-components";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { lightTheme, other, typography, darkTheme } from "../GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCountries, selectCountries } from "../redux/slices/countries";
+import {
+  fetchCountries,
+  selectCountries,
+  selectIsLoading,
+} from "../redux/slices/countries";
 import addCommasToNum from "../utils/addComasToNum";
 import { selectTheme } from "../redux/slices/theme";
+import Loader from "../components/Loader";
+import NotFound from "./NotFound";
 
 const Container = styled.main`
   min-height: calc(100vh - 100px);
@@ -106,6 +112,8 @@ const CountryPage = () => {
   const countries = useSelector(selectCountries);
   const navigate = useNavigate();
 
+  const isLoading = useSelector(selectIsLoading);
+
   useEffect(() => {
     if (countries.length) return;
     dispatch(fetchCountries("https://restcountries.com/v3.1/all"));
@@ -118,79 +126,86 @@ const CountryPage = () => {
   const borderCountries = country?.borders?.map(
     (alpha3Code) => countries.find((c) => c.cca3 === alpha3Code).name.common
   );
-  console.log("borderCountries", borderCountries);
+
+  const renderPage = () => {
+    if (isLoading) {
+      return <Loader />;
+    }
+    if (!isLoading && !country) {
+      return <NotFound />;
+    }
+    return (
+      <CountryInfo>
+        <img src={country.flags.svg} alt={country.flags.alt} />
+        <MainInfo>
+          <h1>{country.name.official}</h1>
+          <p>
+            <span>Native name:</span>
+            {countryName.nativeName
+              ? Object.values(Object.values(country.name.nativeName)[0]).join(
+                  ", "
+                )
+              : "No Data"}
+          </p>
+          <p>
+            <span>Population:</span>
+            {addCommasToNum(country.population)}
+          </p>
+          <p>
+            <span>Region:</span>
+            {country.region}
+          </p>
+          <p>
+            <span>Sub Region:</span>
+            {country.subregion ?? "No data"}
+          </p>
+          <p>
+            <span>Capital</span>
+            {country.capital ?? "No data"}
+          </p>
+          <p>
+            <span>Top Level Domain:</span>
+            {country.tld.join(" ")}
+          </p>
+          <p>
+            <span>Currencies:</span>
+            {country.currencies
+              ? Object.values(country.currencies)
+                  .map((c) => c.name)
+                  .join(", ")
+              : "No Data"}
+          </p>
+          <p>
+            <span>Languages:</span>
+            {country.languages
+              ? Object.values(country.languages).join(", ")
+              : "No Data"}
+          </p>
+          <BorderCountries>
+            <p>Border Countries: </p>
+            {!borderCountries ? (
+              "No data"
+            ) : (
+              <div>
+                {borderCountries.map((c) => (
+                  <Link key={c} to={`/${c.toLowerCase()}`}>
+                    <Button $theme={theme}>{c}</Button>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </BorderCountries>
+        </MainInfo>
+      </CountryInfo>
+    );
+  };
+
   return (
     <Container $theme={theme}>
       <Button $theme={theme} onClick={() => navigate(-1)}>
         <FaLongArrowAltLeft /> Back
       </Button>
-
-      {!country ? (
-        "Loader"
-      ) : (
-        <CountryInfo>
-          <img src={country.flags.svg} alt={country.flags.alt} />
-          <MainInfo>
-            <h1>{country.name.official}</h1>
-            <p>
-              <span>Native name:</span>
-              {countryName.nativeName
-                ? Object.values(Object.values(country.name.nativeName)[0]).join(
-                    ", "
-                  )
-                : "No Data"}
-            </p>
-            <p>
-              <span>Population:</span>
-              {addCommasToNum(country.population)}
-            </p>
-            <p>
-              <span>Region:</span>
-              {country.region}
-            </p>
-            <p>
-              <span>Sub Region:</span>
-              {country.subregion ?? "No data"}
-            </p>
-            <p>
-              <span>Capital</span>
-              {country.capital ?? "No data"}
-            </p>
-            <p>
-              <span>Top Level Domain:</span>
-              {country.tld.join(" ")}
-            </p>
-            <p>
-              <span>Currencies:</span>
-              {country.currencies
-                ? Object.values(country.currencies)
-                    .map((c) => c.name)
-                    .join(", ")
-                : "No Data"}
-            </p>
-            <p>
-              <span>Languages:</span>
-              {country.languages
-                ? Object.values(country.languages).join(", ")
-                : "No Data"}
-            </p>
-            <BorderCountries>
-              <p>Border Countries: </p>
-              {!borderCountries ? (
-                "No data"
-              ) : (
-                <div>
-                  {borderCountries.map((c) => (
-                    <Link key={c} to={`/${c.toLowerCase()}`}>
-                      <Button $theme={theme}>{c}</Button>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </BorderCountries>
-          </MainInfo>
-        </CountryInfo>
-      )}
+      {renderPage()}
     </Container>
   );
 };
