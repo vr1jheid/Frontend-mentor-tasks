@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
-
 import { darkTheme, lightTheme } from "../GlobalStyles";
 import {
   fetchCountries,
