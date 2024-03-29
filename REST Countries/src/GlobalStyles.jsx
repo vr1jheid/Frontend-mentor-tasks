@@ -44,4 +44,8 @@ export const other = {
   borderRadius: "5px",
 };
 
+export const media = {
+  mobile: "max-width: 800px",
+};
+
 export default GlobalStyles;

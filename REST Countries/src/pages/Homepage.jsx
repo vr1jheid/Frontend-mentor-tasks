@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { darkTheme, lightTheme } from "../GlobalStyles";
+import { darkTheme, lightTheme, media } from "../GlobalStyles";
 import {
   fetchCountries,
   selectCountries,
@@ -16,7 +16,7 @@ import Error from "../components/Error";
 import { selectTheme } from "../redux/slices/theme";
 
 const Main = styled.main`
-  padding: 50px 70px;
+  padding: 0px 70px;
   min-height: calc(100vh - 100px);
   background-color: ${(props) =>
     props.$theme === "light"
@@ -25,7 +25,10 @@ const Main = styled.main`
 `;
 
 const Countries = styled.div`
-  margin-top: 50px;
+  @media (${media.mobile}) {
+    display: flex;
+    flex-direction: column;
+  }
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
   justify-content: space-between;
@@ -84,10 +87,10 @@ const Homepage = () => {
   };
 
   return (
-    <Main $theme={theme}>
+    <>
       <Filter />
-      {renderCountriesCards()}
-    </Main>
+      <Main $theme={theme}>{renderCountriesCards()}</Main>
+    </>
   );
 };
 

@@ -8,6 +8,7 @@ import { selectTheme } from "../../redux/slices/theme";
 
 const Container = styled.div`
   width: 180px;
+  height: 55px;
   position: relative;
   border: none;
   border-radius: ${other.borderRadius};

@@ -1,11 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { darkTheme, lightTheme, other, typography } from "../GlobalStyles";
+import {
+  darkTheme,
+  lightTheme,
+  other,
+  typography,
+  media,
+} from "../GlobalStyles";
 import addComasToNum from "../utils/addComasToNum";
 import theme, { selectTheme } from "../redux/slices/theme";
 import { useSelector } from "react-redux";
 
 const Container = styled.div`
+  @media (${media.mobile}) {
+    width: 100%;
+  }
   background-color: ${(props) =>
     props.$theme === "light"
       ? lightTheme.colors.white
@@ -22,6 +31,9 @@ const Container = styled.div`
   overflow: hidden;
 
   & > img {
+    @media (${media.mobile}) {
+      width: 100%;
+    }
     display: block;
     width: 320px;
     height: 200px;
@@ -33,6 +45,7 @@ const Bold = styled.span`
 `;
 
 const Info = styled.section`
+  font-size: 1.3em;
   display: flex;
   flex-direction: column;
   gap: 10px;
