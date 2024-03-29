@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import Select from "./Select";
 import StyledButton from "./StyledButton";
@@ -79,9 +79,10 @@ const Filter = () => {
   const searchByNameHandler = (e) => {
     dispatch(setNameFilter(e.target.value));
   };
-  const filterByRegionHandler = (value) => {
+
+  const filterByRegionHandler = useCallback(() => {
     dispatch(setRegionFilter(value));
-  };
+  }, []);
 
   return (
     <Container $theme={theme}>
