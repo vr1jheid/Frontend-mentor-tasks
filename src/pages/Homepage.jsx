@@ -16,7 +16,7 @@ import Error from "../components/Error";
 import { selectTheme } from "../redux/slices/theme";
 
 const Main = styled.main`
-  padding: 0px 70px;
+  padding: 0px 30px;
   padding-bottom: 50px;
   min-height: calc(100vh - 100px);
   background-color: ${(props) =>
