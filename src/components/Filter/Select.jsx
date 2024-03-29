@@ -67,6 +67,7 @@ const Option = styled.li`
 `;
 
 const Select = ({ options, title, dispatchOption }) => {
+  console.log("render select");
   const theme = useSelector(selectTheme);
   const ref = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -115,4 +116,4 @@ const Select = ({ options, title, dispatchOption }) => {
   );
 };
 
-export default Select;
+export default React.memo(Select);

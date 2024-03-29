@@ -15,6 +15,10 @@ import Loader from "../components/Loader";
 import NotFound from "./NotFound";
 
 const Container = styled.main`
+  @media (max-width: 800px) {
+    padding: 70px 30px;
+  }
+
   min-height: calc(100vh - 100px);
   padding: 70px;
   font-size: ${typography.fontSize.detail};
@@ -52,11 +56,25 @@ const Button = styled.button`
 `;
 
 const CountryInfo = styled.section`
+  @media (max-width: 1400px) {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  @media (max-width: 800px) {
+    margin-top: 0px;
+    gap: 0px;
+  }
+
   margin-top: 80px;
   display: flex;
-  gap: 250px;
+  align-items: center;
+  gap: 10%;
 
   & > img {
+    @media (max-width: 1550px) {
+      width: 100%;
+    }
     display: block;
     width: 600px;
     height: 400px;
@@ -65,6 +83,12 @@ const CountryInfo = styled.section`
 `;
 
 const MainInfo = styled.div`
+  @media (max-width: 1550px) {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 100px;
@@ -87,13 +111,29 @@ const MainInfo = styled.div`
 `;
 
 const BorderCountries = styled.div`
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
   grid-column: 1/3;
   margin-top: 30px;
   display: flex;
   gap: 20px;
   align-items: center;
 
+  & button {
+    width: 100%;
+    height: 100%;
+  }
+
   & > div {
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;

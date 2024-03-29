@@ -2,14 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-import { lightTheme, darkTheme, typography, other } from "../GlobalStyles";
+import {
+  lightTheme,
+  darkTheme,
+  typography,
+  other,
+  media,
+} from "../GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { changeTheme, selectTheme } from "../redux/slices/theme";
 
 const StyledHeader = styled.header`
+  @media (${media.mobile}) {
+    padding: 30px 20px;
+  }
+
   padding: 30px 70px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: inherit;
   color: inherit;
   margin-bottom: 5px;
@@ -17,6 +28,10 @@ const StyledHeader = styled.header`
 `;
 
 const Title = styled.h1`
+  @media (${media.mobile}) {
+    font-size: 1.4em;
+  }
+
   font-size: 1.7em;
   font-weight: ${typography.weight.bold};
   border-radius: ${other.borderRadius};
