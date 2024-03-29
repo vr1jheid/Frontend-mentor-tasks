@@ -34,6 +34,7 @@ const Container = styled.div`
     @media (${media.mobile}) {
       width: 100%;
     }
+
     display: block;
     width: 320px;
     height: 200px;
@@ -45,7 +46,7 @@ const Bold = styled.span`
 `;
 
 const Info = styled.section`
-  font-size: 1.3em;
+  font-size: 1.1em;
   display: flex;
   flex-direction: column;
   gap: 10px;

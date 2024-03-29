@@ -17,6 +17,7 @@ import { selectTheme } from "../redux/slices/theme";
 
 const Main = styled.main`
   padding: 0px 70px;
+  padding-bottom: 50px;
   min-height: calc(100vh - 100px);
   background-color: ${(props) =>
     props.$theme === "light"
