@@ -146,6 +146,7 @@ const BorderCountries = styled.div`
 `;
 
 const CountryPage = () => {
+  window.scrollTo(0, 0);
   const theme = useSelector(selectTheme);
   const { country: countryName } = useParams();
   const dispatch = useDispatch();
