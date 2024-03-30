@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const ErrorContainer = styled.div`
@@ -16,7 +15,11 @@ const ErrorContainer = styled.div`
   }
 `;
 
-const Error = ({ message }) => {
+interface Props {
+  message: string
+}
+
+const Error = ({ message }:Props) => {
   return (
     <ErrorContainer>
       <p>Sorry, we have some troubles right now. Please try later again.</p>

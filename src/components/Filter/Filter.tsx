@@ -1,18 +1,19 @@
-import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import Select from "./Select";
 import StyledButton from "./StyledButton";
 import { IoIosSearch, IoMdClose } from "react-icons/io";
 import { darkTheme, lightTheme, media, other } from "../../GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
 import {
   selectNameFilter,
   setNameFilter,
   setRegionFilter,
 } from "../../redux/slices/filter";
 import { selectTheme } from "../../redux/slices/theme";
+import { StyledProps } from "../../sharedTypes/types";
+import { useCallback, useMemo } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
-const Search = styled.div`
+const Search = styled.div<StyledProps>`
   @media (${media.mobile}) {
     width: 100%;
   }
@@ -56,7 +57,7 @@ const Search = styled.div`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<StyledProps>`
   @media (${media.mobile}) {
     flex-direction: column;
     gap: 50px;
@@ -73,18 +74,18 @@ const Container = styled.div`
 `;
 
 const Filter = () => {
-  const theme = useSelector(selectTheme);
-
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
   const memoizedRegions = useMemo(
     () => ["Africa", "America", "Asia", "Europe", "Oceania"],
     []
   );
-  const dispatch = useDispatch();
-  const searchByNameHandler = (e) => {
+
+  const searchByNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setNameFilter(e.target.value));
   };
 
-  const filterByRegionHandler = useCallback((value) => {
+  const filterByRegionHandler = useCallback((value:string) => {
     dispatch(setRegionFilter(value));
   }, []);
 
@@ -93,7 +94,7 @@ const Filter = () => {
       <Search $theme={theme}>
         <IoIosSearch />
         <input
-          value={useSelector(selectNameFilter)}
+          value={useAppSelector(selectNameFilter)}
           onChange={searchByNameHandler}
           type="text"
           placeholder="Search for a country..."

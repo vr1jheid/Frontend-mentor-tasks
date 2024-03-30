@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface FilterState {
+  name: string;
+  region: string;
+}
+
+const initialState: FilterState = {
   name: "",
   region: "",
 };

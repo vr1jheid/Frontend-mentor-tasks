@@ -1,4 +1,3 @@
-import React from "react";
 import { RiLoaderFill } from "react-icons/ri";
 import styled, { keyframes } from "styled-components";
 

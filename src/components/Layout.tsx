@@ -1,13 +1,13 @@
-import React from "react";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 
 import Header from "./Header";
 import { typography, lightTheme, darkTheme } from "../GlobalStyles";
-import { useSelector } from "react-redux";
 import { selectTheme } from "../redux/slices/theme";
+import { StyledProps } from "../sharedTypes/types";
+import { useAppSelector } from "../redux/hooks";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<StyledProps>`
   font-size: ${typography.fontSize.homepage};
   color: ${(props) =>
     props.$theme === "light"
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 const Layout = () => {
-  const theme = useSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
   return (
     <Wrapper $theme={theme}>
       <Header />

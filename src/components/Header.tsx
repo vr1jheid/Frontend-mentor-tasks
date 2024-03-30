@@ -1,16 +1,14 @@
-import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import {
   lightTheme,
-  darkTheme,
   typography,
   other,
   media,
 } from "../GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
 import { changeTheme, selectTheme } from "../redux/slices/theme";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 const StyledHeader = styled.header`
   @media (${media.mobile}) {
@@ -60,8 +58,8 @@ const ThemeSwitcher = styled.button`
 `;
 
 const Header = () => {
-  const theme = useSelector(selectTheme);
-  const dispatch = useDispatch();
+  const theme = useAppSelector(selectTheme);
+  const dispatch = useAppDispatch();
   return (
     <StyledHeader>
       <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>

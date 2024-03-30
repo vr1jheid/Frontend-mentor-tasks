@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card";
-import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 import { darkTheme, lightTheme, media } from "../GlobalStyles";
 import {
   fetchCountries,
@@ -11,11 +12,11 @@ import {
 } from "../redux/slices/countries";
 import { selectNameFilter, selectRegionFilter } from "../redux/slices/filter";
 import { Link } from "react-router-dom";
-import Loader from "../components/Loader";
-import Error from "../components/Error";
 import { selectTheme } from "../redux/slices/theme";
+import { StyledProps } from "../sharedTypes/types";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-const Main = styled.main`
+const Main = styled.main<StyledProps>`
   @media (${media.mobile}) {
     padding: 0px 30px;
   }
@@ -37,7 +38,7 @@ const Countries = styled.div`
   grid-template-columns: repeat(auto-fill, 320px);
   justify-content: space-between;
   row-gap: 50px;
-  column-gap: 50px;
+  column-gap: 20px;
 `;
 
 const NoMatches = styled.div`
@@ -48,12 +49,12 @@ const NoMatches = styled.div`
 `;
 
 const Homepage = () => {
-  const theme = useSelector(selectTheme);
-  const dispatch = useDispatch();
-  const nameFilter = useSelector(selectNameFilter);
-  const regionFilter = useSelector(selectRegionFilter);
-  const countries = useSelector(selectCountries);
-  const isLoading = useSelector(selectIsLoading);
+  const theme = useAppSelector(selectTheme);
+  const dispatch = useAppDispatch();
+  const nameFilter = useAppSelector(selectNameFilter);
+  const regionFilter = useAppSelector(selectRegionFilter);
+  const countries = useAppSelector(selectCountries);
+  const isLoading = useAppSelector(selectIsLoading);
 
   useEffect(() => {
     if (countries.length) return;

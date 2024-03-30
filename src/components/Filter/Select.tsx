@@ -5,8 +5,11 @@ import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { selectRegionFilter } from "../../redux/slices/filter";
 import { selectTheme } from "../../redux/slices/theme";
+import { StyledProps } from "../../sharedTypes/types";
 
-const Container = styled.div`
+
+
+const Container = styled.div<StyledProps>`
   width: 180px;
   height: 55px;
   position: relative;
@@ -55,7 +58,7 @@ const Options = styled.ul`
   box-shadow: ${lightTheme.shadow};
 `;
 
-const Option = styled.li`
+const Option = styled.li<StyledProps>`
   font-size: 1.1em;
   padding: 5px 20px;
   &:hover {
@@ -66,16 +69,25 @@ const Option = styled.li`
   }
 `;
 
-const Select = ({ options, title, dispatchOption }) => {
+interface Props {
+  options: string[];
+  title: string,
+  dispatchOption: any
+}
+
+
+const Select = ({ options, title, dispatchOption }: Props) => {
   console.log("render select");
   const theme = useSelector(selectTheme);
-  const ref = useRef();
+  const ref = useRef<HTMLButtonElement>(null);
+
   const [isOpen, setIsOpen] = useState(false);
   const selectedOption = useSelector(selectRegionFilter);
 
-  const closeSelect = useCallback((e) => {
+  const closeSelect = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
     console.log(isOpen);
-    if (ref.current.contains(e.target)) return;
+    if (ref?.current?.contains(target)) return;
     setIsOpen(false);
     window.removeEventListener("click", closeSelect);
   }, []);

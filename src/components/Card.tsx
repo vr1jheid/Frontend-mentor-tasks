@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import {
   darkTheme,
@@ -8,10 +7,11 @@ import {
   media,
 } from "../GlobalStyles";
 import addComasToNum from "../utils/addComasToNum";
-import theme, { selectTheme } from "../redux/slices/theme";
+import  { selectTheme } from "../redux/slices/theme";
 import { useSelector } from "react-redux";
+import { Country, StyledProps } from "../sharedTypes/types";
 
-const Container = styled.div`
+const Container = styled.div<StyledProps>`
   @media (${media.mobile}) {
     width: 100%;
   }
@@ -65,7 +65,7 @@ const Info = styled.section`
   }
 `;
 
-const Card = (props) => {
+const Card = (props: Country) => {
   const theme = useSelector(selectTheme);
   const { flags, name, population, region, capital } = props;
   return (

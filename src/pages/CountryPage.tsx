@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { lightTheme, other, typography, darkTheme } from "../GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCountries,
   selectCountries,
@@ -13,8 +12,10 @@ import addCommasToNum from "../utils/addComasToNum";
 import { selectTheme } from "../redux/slices/theme";
 import Loader from "../components/Loader";
 import NotFound from "./NotFound";
+import {  StyledProps } from "../sharedTypes/types";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-const Container = styled.main`
+const Container = styled.main<StyledProps>`
   @media (max-width: 800px) {
     padding: 70px 30px;
   }
@@ -28,7 +29,7 @@ const Container = styled.main`
       : darkTheme.colors.veryDarkBlue};
 `;
 
-const Button = styled.button`
+const Button = styled.button<StyledProps>`
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -36,7 +37,7 @@ const Button = styled.button`
 
   background-color: ${(props) =>
     props.$theme === "light"
-      ? lightTheme.colors.whitem
+      ? lightTheme.colors.white
       : darkTheme.colors.darkBlue};
 
   color: ${(props) =>
@@ -147,13 +148,15 @@ const BorderCountries = styled.div`
 
 const CountryPage = () => {
   window.scrollTo(0, 0);
-  const theme = useSelector(selectTheme);
-  const { country: countryName } = useParams();
-  const dispatch = useDispatch();
-  const countries = useSelector(selectCountries);
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const isLoading = useSelector(selectIsLoading);
+  const theme = useAppSelector(selectTheme);
+  const isLoading = useAppSelector(selectIsLoading);
+  const countries = useAppSelector(selectCountries);
+
+  const { country: countryName } = useParams();
 
   useEffect(() => {
     if (countries.length) return;
@@ -161,11 +164,11 @@ const CountryPage = () => {
   }, []);
 
   const country = countries.find(
-    (country) => country.name.common.toLowerCase() === countryName.toLowerCase()
+    (country) => country.name.common.toLowerCase() === countryName?.toLowerCase()
   );
 
   const borderCountries = country?.borders?.map(
-    (alpha3Code) => countries.find((c) => c.cca3 === alpha3Code).name.common
+    (alpha3Code) => countries.find((c) => c.cca3 === alpha3Code)?.name.common
   );
 
   const renderPage = () => {
@@ -175,6 +178,7 @@ const CountryPage = () => {
     if (!isLoading && !country) {
       return <NotFound />;
     }
+    if (!country) return;
     return (
       <CountryInfo>
         <img src={country.flags.svg} alt={country.flags.alt} />
@@ -182,7 +186,7 @@ const CountryPage = () => {
           <h1>{country.name.official}</h1>
           <p>
             <span>Native name:</span>
-            {countryName.nativeName
+            {country.name.nativeName
               ? Object.values(Object.values(country.name.nativeName)[0]).join(
                   ", "
                 )
@@ -206,7 +210,7 @@ const CountryPage = () => {
           </p>
           <p>
             <span>Top Level Domain:</span>
-            {country.tld.join(" ")}
+            {country.tld?.join(" ")}
           </p>
           <p>
             <span>Currencies:</span>
@@ -229,7 +233,7 @@ const CountryPage = () => {
             ) : (
               <div>
                 {borderCountries.map((c) => (
-                  <Link key={c} to={`/${c.toLowerCase()}`}>
+                  <Link key={c} to={`/${c?.toLowerCase()}`}>
                     <Button $theme={theme}>{c}</Button>
                   </Link>
                 ))}

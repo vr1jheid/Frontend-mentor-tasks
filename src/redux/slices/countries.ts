@@ -1,14 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Country } from "../../sharedTypes/types";
 
-const initialState = {
+interface CountriesState {
+  countriesList: Country[];
+  isLoading: boolean;
+}
+
+const initialState: CountriesState = {
   countriesList: [],
   isLoading: false,
 };
 
 export const fetchCountries = createAsyncThunk(
   "countries/fetchCountries",
-  async (url) => {
+  async (url: string) => {
     const { data } = await axios.get(url);
     return data;
   }
@@ -27,13 +33,14 @@ const countriesSlice = createSlice({
         state.countriesList = action.payload;
         state.isLoading = false;
       })
-      .addCase(fetchCountries.pending, (state, action) => {
+      .addCase(fetchCountries.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchCountries.rejected, (state, action) => {
+      .addCase(fetchCountries.rejected, (state) => {
         state.isLoading = false;
       });
   },
+  reducers: {},
 });
 
 export const { selectCountries, selectIsLoading } = countriesSlice.selectors;
