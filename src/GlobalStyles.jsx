@@ -45,7 +45,7 @@ export const other = {
 };
 
 export const media = {
-  mobile: "max-width: 800px",
+  mobile: "max-width: 600px",
 };
 
 export default GlobalStyles;

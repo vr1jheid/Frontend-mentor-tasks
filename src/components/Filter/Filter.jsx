@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import Select from "./Select";
 import StyledButton from "./StyledButton";
@@ -74,13 +74,17 @@ const Container = styled.div`
 
 const Filter = () => {
   const theme = useSelector(selectTheme);
-  const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
+
+  const memoizedRegions = useMemo(
+    () => ["Africa", "America", "Asia", "Europe", "Oceania"],
+    []
+  );
   const dispatch = useDispatch();
   const searchByNameHandler = (e) => {
     dispatch(setNameFilter(e.target.value));
   };
 
-  const filterByRegionHandler = useCallback(() => {
+  const filterByRegionHandler = useCallback((value) => {
     dispatch(setRegionFilter(value));
   }, []);
 
@@ -100,7 +104,7 @@ const Filter = () => {
         </StyledButton>
       </Search>
       <Select
-        options={regions}
+        options={memoizedRegions}
         title={"Filter by region"}
         dispatchOption={filterByRegionHandler}
       />

@@ -16,7 +16,10 @@ import Error from "../components/Error";
 import { selectTheme } from "../redux/slices/theme";
 
 const Main = styled.main`
-  padding: 0px 30px;
+  @media (${media.mobile}) {
+    padding: 0px 30px;
+  }
+  padding: 0px 70px;
   padding-bottom: 50px;
   min-height: calc(100vh - 100px);
   background-color: ${(props) =>
@@ -34,6 +37,7 @@ const Countries = styled.div`
   grid-template-columns: repeat(auto-fill, 320px);
   justify-content: space-between;
   row-gap: 50px;
+  column-gap: 50px;
 `;
 
 const NoMatches = styled.div`

@@ -12,3 +12,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </Provider>
 );
+
+function AuthLayout({ authenticated }) {
+  const location = useLocation();
+  return authenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" replace state={{ from: location }} />
+  );
+}
